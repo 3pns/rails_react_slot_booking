@@ -5,6 +5,7 @@ ruby "3.1.3"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4"
+gem 'active_model_serializers', '~> 0.10.13'
 
 # Use sqlite3 as the database for Active Record
 gem "pg", "~> 1.4.5"
