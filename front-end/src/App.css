@@ -1,0 +1,7 @@
+:root {
+  --toastify-color-dark: var(--bs-dark) !important;
+  --toastify-color-info: var(--bs-info) !important;
+  --toastify-color-success: var(--bs-success) !important;
+  --toastify-color-warning: var(--bs-warning) !important;
+  --toastify-color-error: var(--bs-error) !important;
+}
