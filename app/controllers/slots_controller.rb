@@ -23,7 +23,7 @@ class SlotsController < ApplicationController
     # Generate all possible slots of a day
     possible_slots = []
     slot_cursor = start_at
-    while slot_cursor + slot_duration < end_at
+    while slot_cursor + slot_duration <= end_at
       possible_slots.push(Slot.new(start_at: slot_cursor, end_at: slot_cursor + slot_duration))
       slot_cursor += slot_increment
     end
@@ -34,11 +34,12 @@ class SlotsController < ApplicationController
     #  remove unbookable slots
     i = possible_slots.length - 1
     while i >= 0
-      overlapping_slots = slots.select{|s| s.end_at >= possible_slots[i].start_at && s.start_at <= possible_slots[i].end_at}
+      overlapping_slots = slots.select{|s| s.end_at > possible_slots[i].start_at && s.start_at < possible_slots[i].end_at}
       bookable = overlapping_slots.count == 0
       possible_slots.delete_at(i) unless bookable
       i -= 1
     end
+    p possible_slots.length
     render json: possible_slots
 
   end

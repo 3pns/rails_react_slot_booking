@@ -1,32 +1,36 @@
 import { DateTime } from "luxon"
 import { useState } from "react"
 import { toast } from 'react-toastify';
+import { ApiService } from '../services/api'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Slot {
   id?: string
-  startAt?: any
-  endAt?: any
+  start_at?: any
+  end_at?: any
 }
 
-const SlotBox = ({index, slot, selected, setSelected}:{index: string, slot: Slot, selected: string, setSelected: React.Dispatch<React.SetStateAction<string>>}) => {
-  const startAt = DateTime.fromISO(slot.startAt)
-  const endAt = DateTime.fromISO(slot.endAt)
+const SlotBox = ({index, slot, selected, setSelected, refetch}:{index: string, slot: Slot, selected: string, setSelected: React.Dispatch<React.SetStateAction<string>>, refetch: any}) => {
+  const queryClient = useQueryClient()
+  const startAt = DateTime.fromISO(slot.start_at)
+  const endAt = DateTime.fromISO(slot.end_at)
   const available = [null, ""].includes(slot.id)
   const open = ( selected === index)
 
   const confirmSlot = () => {
-    console.log("confirmingSlot")
-    console.log(slot)
-    toast.success("Slot booking confirmed, see you in Antarctica !", {
+      ApiService.Slots.book({startAtISO: slot.start_at, endAtISO: slot.end_at}).then(() => {
+        refetch()
+        setSelected(null)
+        toast.success("Slot booking confirmed, see you in Antarctica !", {
+      })
     })
   }
-
   return (
     <div className="col-lg-12" >
       <div className="col-lg-12" >
         <button 
           type="button" 
-          className={`btn ${open ? 'btn-dark ': 'btn-outline-dark' } btn-block btn-lg mb-2`}
+          className={`btn ${open ? `btn-${available ? "dark" : "danger"} `: `btn-outline-${available ? "dark" : "danger"}` } btn-block btn-lg mb-2`}
           disabled={!available}
           style={{width: "100%"}}
           onClick={() => setSelected(index)}
@@ -35,7 +39,7 @@ const SlotBox = ({index, slot, selected, setSelected}:{index: string, slot: Slot
         </button>
         { open && <button 
           type="button" 
-          className="btn btn-success btn-block btn-lg mb-2"
+          className={`btn btn-${available ? "success" : "danger"} btn-block btn-lg mb-2`}
           disabled={!available}
           style={{width: "100%"}}
           onClick={confirmSlot}

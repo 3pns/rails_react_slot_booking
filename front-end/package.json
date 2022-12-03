@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "@tanstack/react-query": "^4.19.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -13,6 +14,7 @@
     "@types/react": "^18.0.0",
     "@types/react-calendar": "^3.9.0",
     "@types/react-dom": "^18.0.0",
+    "axios": "^1.2.0",
     "bootstrap": "^5.2.3",
     "html-duration-picker": "^2.3.5",
     "luxon": "^3.1.1",
