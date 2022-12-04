@@ -46,6 +46,9 @@ class SlotsController < ApplicationController
   def create
     slot = Slot.new(slot_params)
     if slot.save
+      ActionCable.server.broadcast("slot_booking_channel_#{(slot.start_at - 1.days ).strftime("%Y-%m-%d")}", { body: "refetch-slots" })
+      ActionCable.server.broadcast("slot_booking_channel_#{slot.start_at.strftime("%Y-%m-%d")}", { body: "refetch-slots" })
+      ActionCable.server.broadcast("slot_booking_channel_#{(slot.start_at + 1.days ).strftime("%Y-%m-%d")}", { body: "refetch-slots" })
       render json: slot, adapter: :json, status: 201
     else
       render json: { error: slot.errors }, status: 422

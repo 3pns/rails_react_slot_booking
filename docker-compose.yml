@@ -6,11 +6,13 @@ services:
     - "3000:3000"
     depends_on:
     - db
+    - redis
     environment:
     - RAILS_ENV=development
     - POSTGRES_USER=rails_react_slot_booking
     - POSTGRES_PASSWORD=demo123
     - POSTGRES_HOST=db
+    - REDIS_URL=redis://redis:6379/1
     command: sh -c 'rails db:create && rails db:migrate && rails db:seed && puma -C config/puma.rb'
   db:
     image: postgres:15.1
@@ -19,6 +21,10 @@ services:
     environment:
     - POSTGRES_USER=rails_react_slot_booking
     - POSTGRES_PASSWORD=demo123
+  redis:
+    image: redis:7.0.5-alpine
+    ports:
+    - "6379"
   react_front:
     build: ./front-end
     ports:
