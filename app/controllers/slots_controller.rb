@@ -1,23 +1,16 @@
 class SlotsController < ApplicationController
   before_action :find_slot, only: [:show ]#:update, :destroy]
   def index
-    params.require(:start_at)
-    params.require(:end_at)
-    params.permit(:start_at, :end_at)
-    start_at = Time.parse(params[:start_at])
-    end_at = Time.parse(params[:end_at])
+    start_at = Time.parse(params.require(:start_at))
+    end_at = Time.parse(params.require(:end_at))
     @slots = Slot.where("end_at > ?", start_at).where("start_at <= ?", end_at).order(start_at: :asc)
     render json: @slots
   end
 
   def bookable_slots
-    params.require(:start_at)
-    params.require(:end_at)
-    params.require(:slot_duration)
-    params.permit(:start_at, :end_at, :slot_duration)
-    start_at = Time.parse(params[:start_at])
-    end_at = Time.parse(params[:end_at])
-    slot_duration = ActiveSupport::Duration.parse(params[:slot_duration]) # "P1Y2M10DT2H30M"
+    start_at = Time.parse(params.require(:start_at))
+    end_at = Time.parse(params.require(:end_at))
+    slot_duration = ActiveSupport::Duration.parse(params.require(:slot_duration)) # "P1Y2M10DT2H30M"
     slot_increment = ActiveSupport::Duration.parse("PT15M")
 
     # Generate all possible slots of a day
