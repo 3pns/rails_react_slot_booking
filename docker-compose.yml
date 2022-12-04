@@ -1,0 +1,27 @@
+version: '3'
+services:
+  rails_api:
+    build: .
+    ports:
+    - "3000:3000"
+    depends_on:
+    - db
+    environment:
+    - RAILS_ENV=development
+    - POSTGRES_USER=rails_react_slot_booking
+    - POSTGRES_PASSWORD=demo123
+    - POSTGRES_HOST=db
+    command: sh -c 'rails db:create && rails db:migrate && rails db:seed && puma -C config/puma.rb'
+  db:
+    image: postgres:15.1
+    ports:
+    - "5432"
+    environment:
+    - POSTGRES_USER=rails_react_slot_booking
+    - POSTGRES_PASSWORD=demo123
+  react_front:
+    build: ./front-end
+    ports:
+    - "3500:3500"
+    depends_on:
+    - rails_api

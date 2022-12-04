@@ -21,8 +21,6 @@ class SlotsController < ApplicationController
   end
 
   def update
-    p "TESTEST update"
-    p data
   end
 
   def destroy

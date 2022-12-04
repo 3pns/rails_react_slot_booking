@@ -39,7 +39,6 @@ class SlotsController < ApplicationController
       possible_slots.delete_at(i) unless bookable
       i -= 1
     end
-    p possible_slots.length
     render json: possible_slots
 
   end
